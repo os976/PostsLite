@@ -1,0 +1,32 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/postsFragment">
+
+    <fragment
+        android:id="@+id/postsFragment"
+        android:name="com.example.postslite.presentation.posts.PostsFragment"
+        android:label="Posts">
+        <action
+            android:id="@+id/action_posts_to_details"
+            app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_posts_to_saved"
+            app:destination="@id/savedFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.postslite.presentation.details.DetailsFragment"
+        android:label="Details">
+        <argument android:name="postId" app:argType="integer" />
+        <argument android:name="title" app:argType="string" />
+        <argument android:name="body" app:argType="string" />
+        <argument android:name="isSaved" app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/savedFragment"
+        android:name="com.example.postslite.presentation.saved.SavedFragment"
+        android:label="Saved" />
+</navigation>
