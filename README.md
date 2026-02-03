@@ -42,7 +42,7 @@ PostsLite follows a clean MVVM-based architecture:
 ## Architecture Diagram
 
 <p align="center">
-  <img src="screenshots/architecture.png" width="600"/>
+  <img src="screenshots/architecture.png" width="450"/>
 </p>
 
 
