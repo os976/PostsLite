@@ -63,9 +63,7 @@ Domain Models (Post)
 ---
 ## Architecture Diagram
 
-<p align="center">
-  <img src="screenshots/architecture.png" width="600"/>
-</p>
+![](screenshots/architecture.png)
 
 
 ## Screenshots
