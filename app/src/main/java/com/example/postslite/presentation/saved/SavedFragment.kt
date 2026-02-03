@@ -1,7 +1,6 @@
 package com.example.postslite.presentation.saved
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -9,11 +8,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.postslite.R
 import com.example.postslite.databinding.FragmentSavedBinding
+import com.example.postslite.domain.model.Post
 import com.example.postslite.presentation.common.DateTimeUtils
 import com.example.postslite.presentation.common.UiState
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -28,149 +30,95 @@ class SavedFragment : Fragment(R.layout.fragment_saved) {
     private val vm: SavedViewModel by viewModels()
     private lateinit var adapter: SavedAdapter
 
-    private var selectAllItem: MenuItem? = null
-    private var clearItem: MenuItem? = null
-    private var deleteItem: MenuItem? = null
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSavedBinding.bind(view)
 
-        // Toolbar
-        binding.toolbar.title = "Saved Posts"
-        binding.toolbar.subtitle = DateTimeUtils.nowFormatted()
+        binding.toolbar.title = ""
+        binding.toolbar.subtitle = DateTimeUtils.timeOnly()
 
-        binding.toolbar.setNavigationIcon(
-            androidx.appcompat.R.drawable.abc_ic_ab_back_material
+        adapter = SavedAdapter(
+            onSelectionChanged = { count ->
+                binding.btnDelete.isEnabled = count > 0
+            },
+            onPostClick = { post ->
+                openDetails(post)
+            }
         )
-        binding.toolbar.setNavigationOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-
-        // Menu بدون Icons (Text فقط)
-        binding.toolbar.menu.clear()
-
-        selectAllItem = binding.toolbar.menu.add("Select All").apply {
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-            isVisible = false
-        }
-
-        clearItem = binding.toolbar.menu.add("Clear").apply {
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-            isVisible = false
-            isEnabled = false
-        }
-
-        deleteItem = binding.toolbar.menu.add("Delete").apply {
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-            isVisible = false
-            isEnabled = false
-        }
-
-        // Recycler
-        adapter = SavedAdapter { count ->
-            val hasSelection = count > 0
-            deleteItem?.isEnabled = hasSelection
-            clearItem?.isEnabled = hasSelection
-
-            binding.toolbar.title =
-                if (hasSelection) "Selected: $count" else "Saved Posts"
-        }
 
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
         binding.recycler.adapter = adapter
 
-        // Menu Clicks
-        binding.toolbar.setOnMenuItemClickListener { item ->
-            when (item) {
-                selectAllItem -> {
-                    adapter.selectAll()
-                    true
-                }
+        binding.btnSelectAll.setOnClickListener { adapter.selectAll() }
+        binding.btnClear.setOnClickListener { adapter.clearSelection() }
 
-                clearItem -> {
-                    adapter.clearSelection()
-                    true
-                }
-
-                deleteItem -> {
-                    val ids = adapter.getSelectedIds()
-                    if (ids.isEmpty()) return@setOnMenuItemClickListener true
-
-                    AlertDialog.Builder(requireContext())
-                        .setTitle("Delete posts?")
-                        .setMessage("Are you sure you want to delete selected posts?")
-                        .setPositiveButton("Delete") { _, _ ->
-                            vm.deleteSelected(ids)
-                            adapter.clearSelection()
-                        }
-                        .setNegativeButton("Cancel", null)
-                        .show()
-
-                    true
-                }
-
-                else -> false
-            }
+        binding.btnDelete.setOnClickListener {
+            val ids = adapter.getSelectedIds()
+            if (ids.isEmpty()) return@setOnClickListener
+            showConfirmDelete(ids)
         }
 
-        // Observe State
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                vm.state.collect { state ->
-                    binding.progress.visibility = View.GONE
-                    binding.emptyText.visibility = View.GONE
-
-                    when (state) {
-
-                        UiState.Loading -> {
-                            binding.progress.visibility = View.VISIBLE
-                            setActionsVisible(false)
-                        }
-
-                        UiState.Empty -> {
-                            binding.emptyText.visibility = View.VISIBLE
-                            adapter.submitList(emptyList())
-                            setActionsVisible(false)
-                        }
-
-                        is UiState.Success -> {
-                            adapter.submitList(state.data)
-                            setActionsVisible(state.data.isNotEmpty())
-                        }
-
-                        is UiState.Error -> {
-                            binding.emptyText.text = state.message
-                            binding.emptyText.visibility = View.VISIBLE
-                            setActionsVisible(false)
-                        }
-                    }
-                }
+                vm.state.collect { render(it) }
             }
         }
 
-        // Auto Update Time Every Minute
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 while (isActive) {
-                    binding.toolbar.subtitle = DateTimeUtils.nowFormatted()
+                    binding.toolbar.subtitle = DateTimeUtils.timeOnly()
                     delay(60_000)
                 }
             }
         }
     }
 
-    private fun setActionsVisible(visible: Boolean) {
-        selectAllItem?.isVisible = visible
-        clearItem?.isVisible = visible
-        deleteItem?.isVisible = visible
+    private fun showConfirmDelete(ids: List<Int>) {
+        val snapshot = adapter.currentList.filter { ids.contains(it.id) }
 
-        if (!visible) {
-            clearItem?.isEnabled = false
-            deleteItem?.isEnabled = false
-            binding.toolbar.title = "Saved Posts"
+        AlertDialog.Builder(requireContext())
+            .setTitle("Delete saved posts?")
+            .setMessage("Delete ${ids.size} item(s)?")
+            .setPositiveButton("Delete") { _, _ ->
+                vm.deleteSelected(ids)
+                adapter.clearSelection()
+
+                Snackbar.make(binding.root, "Deleted ${ids.size} post(s)", Snackbar.LENGTH_LONG)
+                    .setAction("Undo") {
+                        vm.restore(snapshot)
+                        Snackbar.make(binding.root, "Restored", Snackbar.LENGTH_SHORT).show()
+                    }
+                    .show()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun render(state: UiState<List<Post>>) {
+        binding.progress.visibility = View.GONE
+        binding.emptyText.visibility = View.GONE
+        binding.errorText.visibility = View.GONE
+
+        when (state) {
+            UiState.Loading -> binding.progress.visibility = View.VISIBLE
+            UiState.Empty -> binding.emptyText.visibility = View.VISIBLE
+            is UiState.Error -> {
+                binding.errorText.text = state.message
+                binding.errorText.visibility = View.VISIBLE
+            }
+            is UiState.Success -> adapter.submitList(state.data)
         }
+    }
+
+    private fun openDetails(post: Post) {
+        val bundle = Bundle().apply {
+            putInt("postId", post.id)
+            putString("title", post.title)
+            putString("body", post.body)
+            putBoolean("isSaved", true)
+        }
+        findNavController().navigate(R.id.detailsFragment, bundle)
     }
 
     override fun onDestroyView() {

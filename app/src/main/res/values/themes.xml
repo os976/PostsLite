@@ -2,24 +2,19 @@
 
     <style name="Theme.PostsLite" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <!-- Primary -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
 
-        <!-- Secondary -->
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
 
-        <!-- Background / Surface -->
         <item name="android:colorBackground">@color/colorBackground</item>
         <item name="colorSurface">@color/colorSurface</item>
 
-        <!-- Text -->
         <item name="android:textColorPrimary">@color/textPrimary</item>
         <item name="android:textColorSecondary">@color/textSecondary</item>
 
-        <!-- Status bar -->
         <item name="android:statusBarColor">@color/colorPrimary</item>
 
     </style>

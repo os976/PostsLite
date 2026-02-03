@@ -1,6 +1,7 @@
 package com.example.postslite.di
 
 import com.example.postslite.data.local.PostDao
+import com.example.postslite.data.local.RecentDao
 import com.example.postslite.data.remote.PostsApi
 import com.example.postslite.data.repository.PostsRepositoryImpl
 import com.example.postslite.domain.repository.PostsRepository
@@ -14,7 +15,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
 
-    @Provides @Singleton
-    fun provideRepo(api: PostsApi, dao: PostDao): PostsRepository =
-        PostsRepositoryImpl(api, dao)
+    @Provides
+    @Singleton
+    fun provideRepo(api: PostsApi, postDao: PostDao, recentDao: RecentDao): PostsRepository {
+        return PostsRepositoryImpl(api, postDao, recentDao)
+    }
 }

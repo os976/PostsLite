@@ -9,15 +9,14 @@ import com.example.postslite.databinding.ItemSavedBinding
 import com.example.postslite.domain.model.Post
 
 class SavedAdapter(
-    private val onSelectionChanged: (Int) -> Unit
+    private val onSelectionChanged: (Int) -> Unit,
+    private val onPostClick: (Post) -> Unit
 ) : ListAdapter<Post, SavedAdapter.VH>(DiffCallback) {
 
     private val selectedIds = linkedSetOf<Int>()
 
-    // ---------- ViewHolder ----------
     class VH(val binding: ItemSavedBinding) : RecyclerView.ViewHolder(binding.root)
 
-    // ---------- DiffUtil ----------
     companion object {
         val DiffCallback = object : DiffUtil.ItemCallback<Post>() {
             override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
@@ -30,7 +29,6 @@ class SavedAdapter(
         }
     }
 
-    // ---------- Required overrides ----------
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val binding = ItemSavedBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -50,20 +48,17 @@ class SavedAdapter(
         holder.binding.check.isChecked = selectedIds.contains(post.id)
 
         holder.binding.check.setOnCheckedChangeListener { _, checked ->
-            if (checked) {
-                selectedIds.add(post.id)
-            } else {
-                selectedIds.remove(post.id)
-            }
+            if (checked) selectedIds.add(post.id)
+            else selectedIds.remove(post.id)
+
             onSelectionChanged(selectedIds.size)
         }
 
         holder.binding.root.setOnClickListener {
-            holder.binding.check.isChecked = !holder.binding.check.isChecked
+            onPostClick(post)
         }
     }
 
-    // ---------- Selection helpers ----------
     fun getSelectedIds(): List<Int> = selectedIds.toList()
 
     fun clearSelection() {

@@ -22,7 +22,7 @@ class SavedViewModel @Inject constructor(
 
     val state: StateFlow<UiState<List<Post>>> =
         repo.observeSaved()
-            .map< List<Post>, UiState<List<Post>> > { list ->
+            .map<List<Post>, UiState<List<Post>>> { list ->
                 if (list.isEmpty()) UiState.Empty else UiState.Success(list)
             }
             .onStart { emit(UiState.Loading) }
@@ -30,8 +30,10 @@ class SavedViewModel @Inject constructor(
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
     fun deleteSelected(ids: List<Int>) {
-        viewModelScope.launch {
-            repo.deleteSaved(ids)
-        }
+        viewModelScope.launch { repo.deleteSaved(ids) }
+    }
+
+    fun restore(posts: List<Post>) {
+        viewModelScope.launch { repo.restoreSaved(posts) }
     }
 }

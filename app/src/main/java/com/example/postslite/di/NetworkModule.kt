@@ -30,7 +30,6 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            // ✅ DummyJSON (شغال على أجهزة قديمة)
             .baseUrl("https://dummyjson.com/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())

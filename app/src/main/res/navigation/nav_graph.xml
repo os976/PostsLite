@@ -1,18 +1,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/postsFragment">
+    app:startDestination="@id/homeTabsFragment">
 
     <fragment
-        android:id="@+id/postsFragment"
-        android:name="com.example.postslite.presentation.posts.PostsFragment"
-        android:label="Posts">
+        android:id="@+id/homeTabsFragment"
+        android:name="com.example.postslite.presentation.tabs.HomeTabsFragment"
+        android:label="Home">
         <action
-            android:id="@+id/action_posts_to_details"
+            android:id="@+id/action_home_to_details"
             app:destination="@id/detailsFragment" />
         <action
-            android:id="@+id/action_posts_to_saved"
-            app:destination="@id/savedFragment" />
+            android:id="@+id/action_home_to_settings"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -26,7 +26,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/savedFragment"
-        android:name="com.example.postslite.presentation.saved.SavedFragment"
-        android:label="Saved" />
+        android:id="@+id/settingsFragment"
+        android:name="com.example.postslite.presentation.settings.SettingsFragment"
+        android:label="Settings" />
+
 </navigation>

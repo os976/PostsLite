@@ -1,4 +1,4 @@
-package com.example.postslite.presentation.posts
+package com.example.postslite.presentation.tabs.recent
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,7 +6,6 @@ import com.example.postslite.domain.model.Post
 import com.example.postslite.domain.repository.PostsRepository
 import com.example.postslite.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -17,14 +16,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PostsViewModel @Inject constructor(
+class RecentViewModel @Inject constructor(
     private val repo: PostsRepository
 ) : ViewModel() {
 
-    private val query = MutableStateFlow("")
-
     val state: StateFlow<UiState<List<Post>>> =
-        repo.observePosts(query)
+        repo.observeRecent()
             .map<List<Post>, UiState<List<Post>>> { list ->
                 if (list.isEmpty()) UiState.Empty else UiState.Success(list)
             }
@@ -32,15 +29,7 @@ class PostsViewModel @Inject constructor(
             .catch { emit(UiState.Error(it.message ?: "Unknown error")) }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
-    fun onSearchChanged(text: String) {
-        query.value = text
-    }
-
-    fun onToggleSave(post: Post) {
+    fun toggleSave(post: Post) {
         viewModelScope.launch { repo.toggleSave(post) }
-    }
-
-    fun onOpened(post: Post) {
-        viewModelScope.launch { repo.addRecentOpened(post) }
     }
 }

@@ -31,7 +31,6 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentDetailsBinding.bind(view)
 
-        // Toolbar
         binding.toolbar.title = "Post Details"
         binding.toolbar.subtitle = DateTimeUtils.nowFormatted()
         binding.toolbar.setNavigationIcon(androidx.appcompat.R.drawable.abc_ic_ab_back_material)
@@ -39,11 +38,9 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // Content
         binding.title.text = args.title
         binding.body.text = args.body
 
-        // Save / Unsave
         binding.btnSave.text = if (args.isSaved) "Unsave" else "Save"
         binding.btnSave.setOnClickListener {
             val post = Post(
@@ -55,7 +52,7 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
             vm.toggle(post)
         }
 
-        // ⏱ Auto update date & time every minute
+        // Auto update date & time every minute
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 while (isActive) {
