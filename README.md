@@ -38,6 +38,10 @@ The app allows users to browse posts, search through content, save posts offline
 ## Architecture Overview
 
 PostsLite follows a clean MVVM-based architecture:
+---
+## Architecture Diagram
+
+![](screenshots/architecture.png)
 
 
 
