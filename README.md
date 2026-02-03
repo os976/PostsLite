@@ -61,6 +61,10 @@ Domain Models (Post)
   (Tested on Samsung Galaxy Note 3)
 
 ---
+## Architecture Diagram
+
+![](screenshots/architecture.png)
+
 
 ## Screenshots
 
