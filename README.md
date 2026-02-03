@@ -62,15 +62,15 @@ The app allows users to browse posts, search through content, save posts offline
 
 ---
 
-### Undo Delete Flow
+### Delete & Undo Flow
 
-| Undo Step 1 | Undo Step 2 |
-|------------|------------|
-| ![](screenshots/05_saved_undo.png) | ![](screenshots/06_saved_undo.png) |
+| Selection Mode | Delete Confirmation |
+|---------------|---------------------|
+| ![](screenshots/05_saved_selection.png) | ![](screenshots/06_delete_confirmation.png) |
 
-| Undo Step 3 | Undo Step 4 |
-|------------|------------|
-| ![](screenshots/07_saved_undo.png) | ![](screenshots/08_saved_undo.png) |
+| Snackbar Undo | Restored State |
+|-------------|----------------|
+| ![](screenshots/07_snackbar_undo.png) | ![](screenshots/08_restored_state.png) |
 
 ---
 
