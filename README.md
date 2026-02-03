@@ -46,7 +46,39 @@ The app allows users to browse posts, search through content, save posts offline
 
 ## Screenshots
 
-Screenshots will be added in the `/screenshots` folder.
+### Main Screens
+
+| All Posts | Search | Details |
+|----------|--------|---------|
+| ![](screenshots/01_all.png) | ![](screenshots/02_search.png) | ![](screenshots/03_details.png) |
+
+---
+
+### Saved Posts
+
+| Saved List |
+|-----------|
+| ![](screenshots/04_saved.png) |
+
+---
+
+### Undo Delete Flow
+
+| Undo Step 1 | Undo Step 2 |
+|------------|------------|
+| ![](screenshots/05_saved_undo.png) | ![](screenshots/06_saved_undo.png) |
+
+| Undo Step 3 | Undo Step 4 |
+|------------|------------|
+| ![](screenshots/07_saved_undo.png) | ![](screenshots/08_saved_undo.png) |
+
+---
+
+### Recent & Settings
+
+| Recent Tab | Settings Screen |
+|-----------|----------------|
+| ![](screenshots/09_recent.png) | ![](screenshots/10_settings.png) |
 
 ---
 
