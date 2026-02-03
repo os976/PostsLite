@@ -39,19 +39,6 @@ The app allows users to browse posts, search through content, save posts offline
 
 PostsLite follows a clean MVVM-based architecture:
 
-```text
-Presentation Layer (UI)
-   ↓
-ViewModel (StateFlow)
-   ↓
-Repository (Single Source of Truth)
-   ↓
-----------------------------------
-| Remote Data Source (Retrofit)  |
-| Local Data Source (Room DB)   |
-----------------------------------
-   ↓
-Domain Models (Post)
 
 
 ## Compatibility
@@ -61,10 +48,6 @@ Domain Models (Post)
   (Tested on Samsung Galaxy Note 3)
 
 ---
-## Architecture Diagram
-
-![](screenshots/architecture.png)
-
 
 ## Screenshots
 
