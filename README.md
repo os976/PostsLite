@@ -35,6 +35,24 @@ The app allows users to browse posts, search through content, save posts offline
 - Material UI Components
 
 ---
+## Architecture Overview
+
+PostsLite follows a clean MVVM-based architecture:
+
+```text
+Presentation Layer (UI)
+   ↓
+ViewModel (StateFlow)
+   ↓
+Repository (Single Source of Truth)
+   ↓
+----------------------------------
+| Remote Data Source (Retrofit)  |
+| Local Data Source (Room DB)   |
+----------------------------------
+   ↓
+Domain Models (Post)
+
 
 ## Compatibility
 
