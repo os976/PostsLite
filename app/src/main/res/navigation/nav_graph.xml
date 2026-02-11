@@ -1,0 +1,33 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeTabsFragment">
+
+    <fragment
+        android:id="@+id/homeTabsFragment"
+        android:name="com.example.postslite.presentation.tabs.HomeTabsFragment"
+        android:label="Home">
+        <action
+            android:id="@+id/action_home_to_details"
+            app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_home_to_settings"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.postslite.presentation.details.DetailsFragment"
+        android:label="Details">
+        <argument android:name="postId" app:argType="integer" />
+        <argument android:name="title" app:argType="string" />
+        <argument android:name="body" app:argType="string" />
+        <argument android:name="isSaved" app:argType="boolean" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.postslite.presentation.settings.SettingsFragment"
+        android:label="Settings" />
+
+</navigation>

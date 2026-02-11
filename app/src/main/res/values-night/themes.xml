@@ -1,0 +1,22 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.PostsLite" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="colorPrimary">#0F172A</item> <!-- Slate 900 -->
+        <item name="colorPrimaryVariant">#020617</item> <!-- Slate 950 -->
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+        <item name="colorSecondary">#22C55E</item> <!-- Green 500 -->
+        <item name="colorOnSecondary">#FFFFFF</item>
+
+        <item name="android:colorBackground">#020617</item>
+        <item name="colorSurface">#0B1220</item>
+
+        <item name="android:textColorPrimary">#F9FAFB</item>
+        <item name="android:textColorSecondary">#9CA3AF</item>
+
+        <item name="android:statusBarColor">#020617</item>
+
+    </style>
+
+</resources>
