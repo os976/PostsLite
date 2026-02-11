@@ -28,20 +28,21 @@ PostsLite is a lightweight posts browsing application that demonstrates:
 
 ---
 
-# 🧱 Architecture
+## 🧱 Architecture
 
 The project follows **Clean Architecture** and is separated into 3 modules:
 
-:app → UI Layer (Fragments, ViewModels)
-:data → Repository, API, Room, Mappers
-:domain → Business Logic, UseCases, Interfaces
+- app → UI Layer (Fragments, ViewModels)
+- data → Repository, API, Room, Mappers interface
+- domain → Business Logic, UseCases, Interfaces
+
 
 ---
 
 ## 🏗 Architecture Diagram
 
 <p align="center">
-  <img src="architecture/architecture_diagram.png" width="600"/>
+  <img src="docs/architecture_diagram.png" width="65git0" alt="Architecture Diagram"/>
 </p>
 
 ---
@@ -49,7 +50,7 @@ The project follows **Clean Architecture** and is separated into 3 modules:
 ## 🔄 Data Flow Diagram
 
 <p align="center">
-  <img src="architecture/data_flow.png" width="600"/>
+  <img src="docs/data_flow.png" width="600"/>
 </p>
 
 ---
@@ -175,6 +176,9 @@ Handles local persistence and offline usage.
   <img src="screenshots/04_saved.png" width="220"/>
   <img src="screenshots/05_saved_undo.png" width="220"/>
   <img src="screenshots/09_recent.png" width="220"/>
+</p>
+
+<p align="center">
   <img src="screenshots/10_settings.png" width="220"/>
 </p>
 
