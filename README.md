@@ -1,244 +1,244 @@
-# 📱 PostsLite
+# PostsLite
 
-A modern Android application built with **Kotlin**, following Clean Architecture principles and designed to be lightweight and optimized for legacy Android devices (minSdk 19).
+Lightweight Android application built with **Kotlin** following **Clean Architecture (Multi-Module)**.
+
+PostsLite is an offline-first app that allows users to:
+- Browse posts
+- Search posts
+- Save / Unsave posts
+- Track recently opened posts
+- Work fully offline using Room database
 
 ---
 
+# 🏗 Architecture
+
+The project follows Clean Architecture with multi-module separation:
+
+```
+:app     → UI Layer (Fragments, ViewModels)
+:data    → Repository, API, Room, Mappers
+:domain  → Business Logic, UseCases, Interfaces
+```
+
+### Why Multi-Module?
+
+- Separation of concerns
+- Better scalability
+- Easier testing
+- Follows SOLID principles
+- Clear dependency direction (UI → Domain → Data)
+
+---
+
+# 📐 Architecture Diagram
+
+<p align="center">
+  <img src="docs/architecture_diagram.png" width="650"/>
+</p>
+
+---
+
+# 🔄 Data Flow Diagram
+
+<p align="center">
+  <img src="docs/data_flow_diagram.png" width="650"/>
+</p>
+
+---
+
+# 🧠 Tech Stack
+
+- Kotlin
+- MVVM
+- Clean Architecture
+- Multi-Module Project
+- Hilt (Dependency Injection)
+- Retrofit (Networking)
+- OkHttp
+- Room Database
+- Coroutines + Flow
+- Version Catalog (TOML)
+- Gradle Kotlin DSL (KTS)
+
+---
+
+# 🌐 API Source
+
+Posts are fetched from:
+
+```
+https://jsonplaceholder.typicode.com/posts
+```
+
+Endpoint used:
+
+```
+GET /posts
+```
+
+---
+
+# 🔁 Data Mapping (Converter)
+
+The project uses a Mapper pattern to separate layers:
+
+```
+PostDto (Network)
+        ↓
+toDomain()
+        ↓
+Post (Domain Model)
+        ↓
+toEntity()
+        ↓
+PostEntity (Room)
+```
+
+This guarantees:
+- Domain layer is independent
+- Data layer handles conversion
+- UI never depends on API models directly
+
+---
+
+# 📦 Modules Breakdown
+
+## 1️⃣ Domain Module
+- Repository interface
+- Business models
+- UseCases
+- No Android dependencies
+
+---
+
+## 2️⃣ Data Module
+- Retrofit API
+- Room Database
+- DAO
+- Mappers
+- Repository Implementation
+
+Depends only on:
+- Domain
+
+---
+
+## 3️⃣ App Module
+- Fragments
+- ViewModels
+- UI State
+- Adapters
+- DI Modules
+
+Depends on:
+- Domain
+- Data
+
+---
+
+# 📱 Application Screens
+
+## 📰 All Posts
+
 <p align="center">
   <img src="screenshots/01_all.png" width="250"/>
+</p>
+
+---
+
+## 🔍 Search
+
+<p align="center">
+  <img src="screenshots/02_search.png" width="250"/>
+</p>
+
+---
+
+## 📄 Post Details
+
+<p align="center">
+  <img src="screenshots/03_details.png" width="250"/>
+</p>
+
+---
+
+## ❤️ Saved Posts
+
+<p align="center">
   <img src="screenshots/04_saved.png" width="250"/>
+</p>
+
+---
+
+## ♻️ Save / Undo Flow
+
+<p align="center">
+  <img src="screenshots/05_saved_undo.png" width="250"/>
+  <img src="screenshots/06_saved_undo.png" width="250"/>
+</p>
+
+<p align="center">
+  <img src="screenshots/07_saved_undo.png" width="250"/>
+  <img src="screenshots/08_saved_undo.png" width="250"/>
+</p>
+
+---
+
+## 🕒 Recent Posts
+
+<p align="center">
   <img src="screenshots/09_recent.png" width="250"/>
 </p>
 
 ---
 
-## 🚀 Project Overview
-
-PostsLite is a lightweight posts browsing application that demonstrates:
-
-- Clean Architecture (Multi-Module)
-- SOLID Principles
-- Repository Pattern
-- Dependency Injection using Hilt
-- Kotlin Coroutines + Flow
-- Offline-first support
-- Legacy device compatibility
-- Version Catalog (TOML)
-- Multi-module Gradle (KTS)
-
----
-
-## 🧱 Architecture
-
-The project follows **Clean Architecture** and is separated into 3 modules:
-
-- app → UI Layer (Fragments, ViewModels)
-- data → Repository, API, Room, Mappers interface
-- domain → Business Logic, UseCases, Interfaces
-
-
----
-
-## 🏗 Architecture Diagram
+## ⚙️ Settings
 
 <p align="center">
-  <img src="docs/architecture_diagram.png" width="700" alt="Architecture Diagram"/>
+  <img src="screenshots/10_settings.png" width="250"/>
 </p>
 
 ---
 
-## 🔄 Data Flow Diagram
+# ⚙️ Gradle Setup
 
-<p align="center">
-  <img src="docs/data_flow_diagram.png" width="700" alt="Data Flow Diagram"/>
-</p>
-# 📦 Modules Breakdown
-
-## 1️⃣ Domain Module
-
-Contains:
-- Post model
-- PostsRepository interface
-- UseCases:
-    - ObservePostsUseCase
-    - ObserveSavedUseCase
-    - ObserveRecentUseCase
-    - ToggleSaveUseCase
-    - DeleteSavedUseCase
-    - ClearSavedUseCase
-    - RestoreSavedUseCase
-    - AddRecentUseCase
-    - ClearRecentUseCase
-
-This layer contains pure business logic without Android framework dependencies.
+- Converted from Groovy → Kotlin DSL (KTS)
+- Uses Version Catalog (`libs.versions.toml`)
+- Structured as Multi-Module
+- Cleaned and optimized build configuration
+- Compatible with Java 17
 
 ---
 
-## 2️⃣ Data Module
+# 🛠 Improvements Implemented
 
-Contains:
-- Retrofit API
-- Room Database
-- DAO interfaces
-- Repository Implementation
-- DTO ↔ Domain ↔ Entity Mappers
-
-Responsible for handling remote and local data sources.
-
----
-
-## 3️⃣ App Module
-
-Contains:
-- Fragments
-- ViewModels
-- Navigation
-- TabLayout + ViewPager2
-- UI State Management
-- Snackbar Undo system
-
-Responsible for UI rendering and interaction.
+- Refactored `PostsRepositoryImpl`
+- Applied SOLID principles
+- Separated into multi-module architecture
+- Fixed memory leaks
+- Unified UI state rendering
+- Simplified visibility handling using `when`
+- Cleaned dependency injection setup
+- Removed unnecessary Gradle configurations
 
 ---
 
-# 🧠 SOLID Principles Applied
+# 📱 Compatibility
 
-- Single Responsibility → Each class has one job
-- Open/Closed → New features added without modifying core logic
-- Dependency Inversion → ViewModels depend on interface, not implementation
-
----
-
-# ⚙️ Gradle Modernization
-
-Converted from:
-Groovy → Kotlin DSL (KTS)
-
-Added:
-Version Catalog (TOML)
-
-Benefits:
-- Centralized dependency management
-- Cleaner build scripts
-- Easier scalability
-
----
-
-# 💾 Database
-
-Room Database with:
-
-- saved_posts
-- recent_opened
-
-Version: 2
-
-Handles local persistence and offline usage.
-
----
-
-# 🔥 Features
-
-## 📌 All Tab
-- Fetch posts from API
-- Search with debounce
-- Real-time filtering
-
-## ⭐ Saved Tab
-- Multi-select delete
-- Undo via Snackbar
-- Select All / Clear Selection
-
-## 🕒 Recent Tab
-- Tracks last opened posts
-- Automatically updates save state
-
-## ⚙ Settings
-- Clear All Saved
-- Clear Recent
-- App Version
-- About Section
-
----
-
-# 🖼 Screenshots
-
-<p align="center">
-  <img src="screenshots/01_all.png" width="220"/>
-  <img src="screenshots/02_search.png" width="220"/>
-  <img src="screenshots/03_details.png" width="220"/>
-</p>
-
-<p align="center">
-  <img src="screenshots/04_saved.png" width="220"/>
-  <img src="screenshots/05_saved_undo.png" width="220"/>
-  <img src="screenshots/09_recent.png" width="220"/>
-</p>
-
-<p align="center">
-  <img src="screenshots/10_settings.png" width="220"/>
-</p>
-
----
-
-# 🛠 Tech Stack
-
-- Kotlin
-- Coroutines
-- Flow
-- Retrofit
-- Room
-- Hilt
-- ViewBinding
-- Material Design
-- ViewPager2
-- TabLayoutMediator
-
----
-
-# 📉 Improvements & Refactoring
-
-- Converted Single Module → Multi Module
-- Applied UseCase layer
-- Repository refactored
-- Crash fixes in Settings
-- Save from Recent fixed
-- Gradle upgraded to KTS
-- Version Catalog applied
-- Memory handling improved
-
----
-
-# 📲 Device Compatibility
-
-- minSdk 19
-- MultiDex enabled
-- CoreLibraryDesugaring enabled
+- Minimum SDK: 19
 - Optimized for legacy devices
+- Offline-first behavior
 
 ---
 
-# 🏁 How To Run
+# 📌 Project Purpose
 
-1. Clone project
-2. Open with Android Studio
-3. Ensure JDK 17
-4. Sync Gradle
-5. Run
+This project demonstrates:
 
----
-
-# 👨‍💻 Author
-
-**Omar Abdlegabbar**
-
-Android Developer  
-Interested in building clean and scalable Android applications.
-
----
-
-# ⭐ If you like this project
-
-Star it ⭐  
-Fork it 🍴  
-Improve it 🚀  
+- Clean Architecture in Android
+- Multi-Module structure
+- Proper repository pattern
+- Dependency Injection with Hilt
+- Reactive UI with Flow
+- Separation between network, database, and domain models
