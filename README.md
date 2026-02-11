@@ -175,12 +175,12 @@ Depends on:
 
 <p align="center">
   <img src="screenshots/05_saved_undo.png" width="250"/>
-  <img src="screenshots/06_saved_undo.png" width="250"/>
+  <img src="screenshots/06_delete_confirmation.png" width="250"/>
 </p>
 
 <p align="center">
-  <img src="screenshots/07_saved_undo.png" width="250"/>
-  <img src="screenshots/08_saved_undo.png" width="250"/>
+  <img src="screenshots/07_snackbar_undo.png" width="250"/>
+  <img src="screenshots/08_restored_state.png" width="250"/>
 </p>
 
 ---
