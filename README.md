@@ -42,7 +42,7 @@ The project follows **Clean Architecture** and is separated into 3 modules:
 ## 🏗 Architecture Diagram
 
 <p align="center">
-  <img src="docs/architecture_diagram.png" width="65git0" alt="Architecture Diagram"/>
+  <img src="docs/architecture_diagram.png" width="700" alt="Architecture Diagram"/>
 </p>
 
 ---
@@ -50,11 +50,8 @@ The project follows **Clean Architecture** and is separated into 3 modules:
 ## 🔄 Data Flow Diagram
 
 <p align="center">
-  <img src="docs/data_flow.png" width="600"/>
+  <img src="docs/data_flow_diagram.png" width="700" alt="Data Flow Diagram"/>
 </p>
-
----
-
 # 📦 Modules Breakdown
 
 ## 1️⃣ Domain Module
