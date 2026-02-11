@@ -3,8 +3,7 @@ package com.example.postslite.presentation.tabs.recent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.postslite.domain.model.Post
-import com.example.postslite.domain.usecase.ObserveRecentUseCase
-import com.example.postslite.domain.usecase.ToggleSaveUseCase
+import com.example.postslite.domain.repository.PostsRepository
 import com.example.postslite.presentation.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,12 +17,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecentViewModel @Inject constructor(
-    private val observeRecent: ObserveRecentUseCase,
-    private val toggleSave: ToggleSaveUseCase
+    private val repo: PostsRepository
 ) : ViewModel() {
 
     val state: StateFlow<UiState<List<Post>>> =
-        observeRecent()
+        repo.observeRecent()
             .map<List<Post>, UiState<List<Post>>> { list ->
                 if (list.isEmpty()) UiState.Empty else UiState.Success(list)
             }
@@ -32,6 +30,8 @@ class RecentViewModel @Inject constructor(
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
 
     fun toggleSave(post: Post) {
-        viewModelScope.launch { toggleSave(post) }
+        viewModelScope.launch {
+            repo.toggleSave(post)
+        }
     }
 }
