@@ -21,9 +21,7 @@ import javax.inject.Provider;
     "unchecked",
     "rawtypes",
     "KotlinInternal",
-    "KotlinInternalInJava",
-    "cast",
-    "deprecation"
+    "KotlinInternalInJava"
 })
 public final class DatabaseModule_ProvideDbFactory implements Factory<AppDatabase> {
   private final Provider<Context> ctxProvider;

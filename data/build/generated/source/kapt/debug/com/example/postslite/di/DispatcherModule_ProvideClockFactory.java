@@ -18,9 +18,7 @@ import javax.annotation.processing.Generated;
     "unchecked",
     "rawtypes",
     "KotlinInternal",
-    "KotlinInternalInJava",
-    "cast",
-    "deprecation"
+    "KotlinInternalInJava"
 })
 public final class DispatcherModule_ProvideClockFactory implements Factory<AppClock> {
   @Override

@@ -20,9 +20,7 @@ import kotlinx.coroutines.CoroutineDispatcher;
     "unchecked",
     "rawtypes",
     "KotlinInternal",
-    "KotlinInternalInJava",
-    "cast",
-    "deprecation"
+    "KotlinInternalInJava"
 })
 public final class RecentLocalDataSourceImpl_Factory implements Factory<RecentLocalDataSourceImpl> {
   private final Provider<RecentDao> daoProvider;

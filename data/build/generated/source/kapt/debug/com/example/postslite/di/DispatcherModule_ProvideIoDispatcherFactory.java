@@ -19,9 +19,7 @@ import kotlinx.coroutines.CoroutineDispatcher;
     "unchecked",
     "rawtypes",
     "KotlinInternal",
-    "KotlinInternalInJava",
-    "cast",
-    "deprecation"
+    "KotlinInternalInJava"
 })
 public final class DispatcherModule_ProvideIoDispatcherFactory implements Factory<CoroutineDispatcher> {
   @Override

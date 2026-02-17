@@ -1,48 +1,64 @@
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    app:cardElevation="3dp"
-    app:cardCornerRadius="12dp"
-    app:cardBackgroundColor="@color/colorSurface">
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:padding="12dp"
+    <data>
+        <variable
+            name="post"
+            type="com.example.postslite.domain.model.Post" />
+        <variable
+            name="onSaveClick"
+            type="kotlin.jvm.functions.Function1&lt;com.example.postslite.domain.model.Post, kotlin.Unit&gt;" />
+        <variable
+            name="onClick"
+            type="kotlin.jvm.functions.Function1&lt;com.example.postslite.domain.model.Post, kotlin.Unit&gt;" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick='@{() -> onClick.invoke(post)}'
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
 
-        <TextView
-            android:id="@+id/title"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/textPrimary"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/body"
-            android:layout_marginTop="6dp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:textSize="14sp"
-            android:textColor="@color/textSecondary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSave"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save"
-            android:textAllCaps="false"
-            android:textColor="@color/colorOnSecondary"
-            app:cornerRadius="12dp"
-            app:backgroundTint="?attr/colorSecondary" />
+            android:orientation="vertical"
+            android:padding="12dp">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{post.title}"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-</com.google.android.material.card.MaterialCardView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{post.body}" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:elevation="6dp"
+                android:text='@{post.isSaved ? "Unsave" : "Save"}'
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/save_green"
+                app:cornerRadius="24dp"
+                android:onClick='@{() -> onSaveClick.invoke(post)}' />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

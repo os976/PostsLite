@@ -21,9 +21,7 @@ import javax.inject.Provider;
     "unchecked",
     "rawtypes",
     "KotlinInternal",
-    "KotlinInternalInJava",
-    "cast",
-    "deprecation"
+    "KotlinInternalInJava"
 })
 public final class PostsRepositoryImpl_Factory implements Factory<PostsRepositoryImpl> {
   private final Provider<PostsApi> apiProvider;

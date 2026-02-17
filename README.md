@@ -1,13 +1,29 @@
 # PostsLite
 
-Lightweight Android application built with **Kotlin** following **Clean Architecture (Multi-Module)**.
+![Kotlin](https://img.shields.io/badge/Kotlin-1.9-blue)
+![Architecture](https://img.shields.io/badge/Clean%20Architecture-Multi%20Module-success)
+![Android](https://img.shields.io/badge/Android-MinSDK%2019-brightgreen)
+![Gradle](https://img.shields.io/badge/Gradle-KTS-orange)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-PostsLite is an offline-first app that allows users to:
-- Browse posts
-- Search posts
+Lightweight Android application built with **Kotlin** following **Clean Architecture (Multi-Module)** principles.
+
+PostsLite is an offline-first Android app that demonstrates modern Android development best practices including reactive state management, clean separation of layers, scalable architecture, and optimized performance for legacy devices.
+
+---
+
+# 🚀 Features
+
+- Browse posts from remote API
+- Real-time search filtering
 - Save / Unsave posts
-- Track recently opened posts
-- Work fully offline using Room database
+- Centralized Undo system (single & bulk delete)
+- Recently opened posts tracking
+- Offline-first architecture using Room
+- Reactive UI powered by Kotlin Flow
+- Multi-module clean architecture
+- Optimistic UI updates
+- Memory leak safe implementation
 
 ---
 
@@ -23,11 +39,13 @@ The project follows Clean Architecture with multi-module separation:
 
 ### Why Multi-Module?
 
-- Separation of concerns
+- Clear separation of concerns
 - Better scalability
-- Easier testing
+- Easier maintainability
+- Testable business logic
+- Enforced dependency direction (UI → Domain → Data)
 - Follows SOLID principles
-- Clear dependency direction (UI → Domain → Data)
+- Production-ready architecture pattern
 
 ---
 
@@ -60,6 +78,7 @@ The project follows Clean Architecture with multi-module separation:
 - Coroutines + Flow
 - Version Catalog (TOML)
 - Gradle Kotlin DSL (KTS)
+- Java 17 Compatibility
 
 ---
 
@@ -96,9 +115,12 @@ PostEntity (Room)
 ```
 
 This guarantees:
-- Domain layer is independent
-- Data layer handles conversion
+
+- Domain layer is completely independent
+- Data layer handles conversion logic
 - UI never depends on API models directly
+- Clear responsibility per layer
+- Strict dependency direction
 
 ---
 
@@ -108,7 +130,8 @@ This guarantees:
 - Repository interface
 - Business models
 - UseCases
-- No Android dependencies
+- Pure Kotlin (no Android dependencies)
+- Core business rules
 
 ---
 
@@ -118,6 +141,7 @@ This guarantees:
 - DAO
 - Mappers
 - Repository Implementation
+- Data sources (Remote & Local)
 
 Depends only on:
 - Domain
@@ -127,9 +151,11 @@ Depends only on:
 ## 3️⃣ App Module
 - Fragments
 - ViewModels
-- UI State
-- Adapters
+- UI State Management
+- RecyclerView Adapters
+- Navigation Component
 - DI Modules
+- Toolbar & UI Architecture
 
 Depends on:
 - Domain
@@ -208,19 +234,42 @@ Depends on:
 - Structured as Multi-Module
 - Cleaned and optimized build configuration
 - Compatible with Java 17
+- Optimized dependency management
 
 ---
 
-# 🛠 Improvements Implemented
+# 🧩 Engineering Decisions
 
-- Refactored `PostsRepositoryImpl`
-- Applied SOLID principles
-- Separated into multi-module architecture
-- Fixed memory leaks
-- Unified UI state rendering
-- Simplified visibility handling using `when`
-- Cleaned dependency injection setup
-- Removed unnecessary Gradle configurations
+- Toolbar centralized in Activity for better navigation architecture
+- Reactive repository using Flow + combine()
+- Applied `distinctUntilChanged()` to optimize UI emissions
+- Centralized Undo system using SharedFlow
+- Optimistic UI updates for Save/Unsave
+- Memory leak prevention via ViewBinding lifecycle cleanup
+- Clear UI state rendering using sealed classes
+- Strict layer separation enforcement
+
+---
+
+# 🔮 Future Improvements
+
+- Unit tests for Domain layer
+- UI tests using Espresso
+- Paging 3 integration
+- Swipe-to-delete with animation
+- Dark mode refinements
+- CI/CD integration
+- GitHub Actions setup
+- Compose migration version
+
+---
+
+# ▶️ How to Run
+
+1. Clone the repository
+2. Open in Android Studio (Giraffe+ recommended)
+3. Sync Gradle
+4. Run on emulator or physical device
 
 ---
 
@@ -229,6 +278,8 @@ Depends on:
 - Minimum SDK: 19
 - Optimized for legacy devices
 - Offline-first behavior
+- Lightweight performance footprint
+- Efficient memory usage
 
 ---
 
@@ -242,3 +293,8 @@ This project demonstrates:
 - Dependency Injection with Hilt
 - Reactive UI with Flow
 - Separation between network, database, and domain models
+- Scalable Android project setup
+- Production-level architectural thinking
+
+---
+

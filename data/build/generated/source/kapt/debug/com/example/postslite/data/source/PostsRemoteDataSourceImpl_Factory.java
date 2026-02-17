@@ -20,9 +20,7 @@ import kotlinx.coroutines.CoroutineDispatcher;
     "unchecked",
     "rawtypes",
     "KotlinInternal",
-    "KotlinInternalInJava",
-    "cast",
-    "deprecation"
+    "KotlinInternalInJava"
 })
 public final class PostsRemoteDataSourceImpl_Factory implements Factory<PostsRemoteDataSourceImpl> {
   private final Provider<PostsApi> apiProvider;

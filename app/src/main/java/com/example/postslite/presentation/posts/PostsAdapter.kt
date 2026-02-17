@@ -21,17 +21,17 @@ class PostsAdapter(
     class VH(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val b = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return VH(b)
+        val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return VH(binding)
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val post = getItem(position)
-        holder.binding.title.text = post.title
-        holder.binding.body.text = post.body
-        holder.binding.btnSave.text = if (post.isSaved) "Unsave" else "Save"
 
-        holder.binding.root.setOnClickListener { onClick(post) }
-        holder.binding.btnSave.setOnClickListener { onSaveClick(post) }
+        holder.binding.post = post
+        holder.binding.onSaveClick = { p -> onSaveClick(p) }
+        holder.binding.onClick = { p -> onClick(p) }
+
+        holder.binding.executePendingBindings()
     }
 }

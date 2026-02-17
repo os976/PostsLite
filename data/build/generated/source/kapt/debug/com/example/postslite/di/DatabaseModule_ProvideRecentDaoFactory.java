@@ -21,9 +21,7 @@ import javax.inject.Provider;
     "unchecked",
     "rawtypes",
     "KotlinInternal",
-    "KotlinInternalInJava",
-    "cast",
-    "deprecation"
+    "KotlinInternalInJava"
 })
 public final class DatabaseModule_ProvideRecentDaoFactory implements Factory<RecentDao> {
   private final Provider<AppDatabase> dbProvider;

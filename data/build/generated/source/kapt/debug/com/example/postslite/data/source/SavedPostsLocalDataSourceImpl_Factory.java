@@ -20,9 +20,7 @@ import kotlinx.coroutines.CoroutineDispatcher;
     "unchecked",
     "rawtypes",
     "KotlinInternal",
-    "KotlinInternalInJava",
-    "cast",
-    "deprecation"
+    "KotlinInternalInJava"
 })
 public final class SavedPostsLocalDataSourceImpl_Factory implements Factory<SavedPostsLocalDataSourceImpl> {
   private final Provider<PostDao> daoProvider;

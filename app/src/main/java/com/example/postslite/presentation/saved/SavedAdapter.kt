@@ -48,9 +48,7 @@ class SavedAdapter(
         holder.binding.check.isChecked = selectedIds.contains(post.id)
 
         holder.binding.check.setOnCheckedChangeListener { _, checked ->
-            if (checked) selectedIds.add(post.id)
-            else selectedIds.remove(post.id)
-
+            if (checked) selectedIds.add(post.id) else selectedIds.remove(post.id)
             onSelectionChanged(selectedIds.size)
         }
 
@@ -60,6 +58,11 @@ class SavedAdapter(
     }
 
     fun getSelectedIds(): List<Int> = selectedIds.toList()
+
+    fun getSelectedPosts(): List<Post> {
+        if (selectedIds.isEmpty()) return emptyList()
+        return currentList.filter { selectedIds.contains(it.id) }
+    }
 
     fun clearSelection() {
         selectedIds.clear()

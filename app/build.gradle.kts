@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("org.jetbrains.kotlin.kapt")
     alias(libs.plugins.hilt)
-    alias(libs.plugins.safeargs)
-    id("kotlin-kapt")
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
@@ -43,14 +43,15 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.appcompat.resources)
     implementation(libs.material)
     implementation(libs.constraintlayout)
+
     implementation(libs.recyclerview)
     implementation(libs.fragment.ktx)
 
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.livedata)
 
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)

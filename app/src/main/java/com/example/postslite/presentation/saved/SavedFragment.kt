@@ -1,7 +1,9 @@
 package com.example.postslite.presentation.saved
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,16 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.postslite.R
 import com.example.postslite.databinding.FragmentSavedBinding
 import com.example.postslite.domain.model.Post
-import com.example.postslite.presentation.common.DateTimeUtils
-import com.example.postslite.presentation.common.UiState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SavedFragment : Fragment(R.layout.fragment_saved) {
+class SavedFragment : Fragment() {
 
     private var _binding: FragmentSavedBinding? = null
     private val binding get() = _binding!!
@@ -30,19 +29,26 @@ class SavedFragment : Fragment(R.layout.fragment_saved) {
     private val vm: SavedViewModel by viewModels()
     private lateinit var adapter: SavedAdapter
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSavedBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = vm
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentSavedBinding.bind(view)
-
-        binding.toolbar.title = ""
-        binding.toolbar.subtitle = DateTimeUtils.timeOnly()
 
         adapter = SavedAdapter(
             onSelectionChanged = { count ->
                 binding.btnDelete.isEnabled = count > 0
             },
             onPostClick = { post ->
-                openDetails(post)
+                vm.onPostClicked(post)
             }
         )
 
@@ -53,62 +59,52 @@ class SavedFragment : Fragment(R.layout.fragment_saved) {
         binding.btnClear.setOnClickListener { adapter.clearSelection() }
 
         binding.btnDelete.setOnClickListener {
-            val ids = adapter.getSelectedIds()
-            if (ids.isEmpty()) return@setOnClickListener
-            showConfirmDelete(ids)
+            val selectedPosts = adapter.getSelectedPosts()
+            if (selectedPosts.isNotEmpty()) showConfirmDelete(selectedPosts)
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                vm.state.collect { render(it) }
+        vm.savedPosts.observe(viewLifecycleOwner) { list ->
+            binding.progress.visibility = View.GONE
+            binding.errorText.visibility = View.GONE
+
+            if (list.isNullOrEmpty()) {
+                binding.emptyText.visibility = View.VISIBLE
+                adapter.submitList(emptyList())
+            } else {
+                binding.emptyText.visibility = View.GONE
+                adapter.submitList(list)
             }
         }
 
+        vm.openDetails.observe(viewLifecycleOwner) { event ->
+            val post = event.getContentIfNotHandled() ?: return@observe
+            openDetails(post)
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                while (isActive) {
-                    binding.toolbar.subtitle = DateTimeUtils.timeOnly()
-                    delay(60_000)
+                launch {
+                    vm.deleteEvent.collectLatest { deleted ->
+                        val msg = if (deleted.size == 1) "1 item deleted" else "${deleted.size} items deleted"
+                        Snackbar.make(binding.root, msg, Snackbar.LENGTH_LONG)
+                            .setAction("Undo") { vm.restore(deleted) }
+                            .show()
+                    }
                 }
             }
         }
     }
 
-    private fun showConfirmDelete(ids: List<Int>) {
-        val snapshot = adapter.currentList.filter { ids.contains(it.id) }
-
+    private fun showConfirmDelete(posts: List<Post>) {
         AlertDialog.Builder(requireContext())
             .setTitle("Delete saved posts?")
-            .setMessage("Delete ${ids.size} item(s)?")
+            .setMessage("Delete ${posts.size} item(s)?")
             .setPositiveButton("Delete") { _, _ ->
-                vm.deleteSelected(ids)
+                vm.deletePosts(posts)
                 adapter.clearSelection()
-
-                Snackbar.make(binding.root, "Deleted ${ids.size} post(s)", Snackbar.LENGTH_LONG)
-                    .setAction("Undo") {
-                        vm.restore(snapshot)
-                        Snackbar.make(binding.root, "Restored", Snackbar.LENGTH_SHORT).show()
-                    }
-                    .show()
             }
             .setNegativeButton("Cancel", null)
             .show()
-    }
-
-    private fun render(state: UiState<List<Post>>) {
-        binding.progress.visibility = View.GONE
-        binding.emptyText.visibility = View.GONE
-        binding.errorText.visibility = View.GONE
-
-        when (state) {
-            UiState.Loading -> binding.progress.visibility = View.VISIBLE
-            UiState.Empty -> binding.emptyText.visibility = View.VISIBLE
-            is UiState.Error -> {
-                binding.errorText.text = state.message
-                binding.errorText.visibility = View.VISIBLE
-            }
-            is UiState.Success -> adapter.submitList(state.data)
-        }
     }
 
     private fun openDetails(post: Post) {
@@ -122,7 +118,9 @@ class SavedFragment : Fragment(R.layout.fragment_saved) {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
+        binding.recycler.adapter = null
         _binding = null
+        super.onDestroyView()
     }
+
 }

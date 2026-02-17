@@ -19,9 +19,7 @@ import okhttp3.OkHttpClient;
     "unchecked",
     "rawtypes",
     "KotlinInternal",
-    "KotlinInternalInJava",
-    "cast",
-    "deprecation"
+    "KotlinInternalInJava"
 })
 public final class NetworkModule_ProvideOkHttpFactory implements Factory<OkHttpClient> {
   @Override

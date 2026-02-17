@@ -1,0 +1,37 @@
+package com.example.postslite.presentation.tabs.recent
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.example.postslite.databinding.ItemPostBinding
+import com.example.postslite.domain.model.Post
+
+class RecentAdapter(
+    private val onPostClick: (Post) -> Unit,
+    private val onSaveClick: (Post) -> Unit
+) : ListAdapter<Post, RecentAdapter.VH>(Diff) {
+
+    object Diff : DiffUtil.ItemCallback<Post>() {
+        override fun areItemsTheSame(oldItem: Post, newItem: Post) = oldItem.id == newItem.id
+        override fun areContentsTheSame(oldItem: Post, newItem: Post) = oldItem == newItem
+    }
+
+    class VH(val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        val binding = ItemPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return VH(binding)
+    }
+
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        val post = getItem(position)
+
+        holder.binding.post = post
+        holder.binding.onSaveClick = { p -> onSaveClick(p) }
+        holder.binding.onClick = { p -> onPostClick(p) }
+
+        holder.binding.executePendingBindings()
+    }
+}
